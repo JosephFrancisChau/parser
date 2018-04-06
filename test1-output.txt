@@ -1,0 +1,16 @@
+Source Code:
+
+if ( x23 > y$ ) account = true
+
+
+Output:
+
+token     		lexeme
+keyword   		if
+separator 		(
+operator  		>
+identifer 		y$
+separator 		)
+identifer 		account
+operator  		=
+keyword   		true
