@@ -1,0 +1,153 @@
+//#include "stdafx.h"
+#include <iostream>
+#include "lexer.h"
+
+Token token;
+int ruleNum;
+string s;
+
+void Print(int ruleNum) {}
+void Empty() {}
+
+void Parser(Token token) {
+	Rat18S(token);
+}
+
+void Error() {
+	cout << "Syntax Error!" << endl;
+}
+
+void Print(int ruleNum) {}
+void Empty() {}
+
+//R1: <Rat18S> → <Opt Function Definitions> %% <Opt Declaration List> <Statement List>
+void Rat18S(Token token) {
+	OptFunctionDefinitions();
+	if (lexer(s).value == "%%") {
+		OptDeclarationList();
+		StatementList();
+		Print(1);
+	}
+	else Error();
+	if (token.value != "$") Error();
+}
+
+//R2: <Opt Function Definitions> → <Function Definitions> | <Empty>
+void OptFunctionDefinitions() {
+	if (token.type == "NotToken" || token.type == "COMMENT") {
+		Empty();
+	}
+	else {
+		FunctionDefinitions();
+		Print(2);
+	}
+}
+
+//R3: <Function Definitions> → <Function> <Function Definitions’>
+void FunctionDefinitions() {
+	Function();
+	FunctionDefinitionsP();
+	Print(3);
+}
+
+//R4: <Function Definitions’> → <Function Definitions> |  𝜀
+void FunctionDefinitionsP() {
+	if (token.type == "NotToken" || token.type == "COMMENT") {
+		Empty();
+	}
+	else {
+		FunctionDefinitions();
+		Print(4);
+	}
+}
+
+//R5: <Function> → function <Identifier> [<Opt Parameter List>] <Opt Declaration List> <Body>
+void Fuction() {
+	if (token.value == "function") {
+		Identifier();
+		if (lexer(s).value == "[") {
+			OptParameterList();
+			if (lexer(s).value == "]") {
+				OptDeclarationList();
+				Body();
+				Print(5);
+			}
+			else Error();
+		}
+		else Error();
+	}
+	else Error();
+}
+
+//R6: <Opt Parameter List> → <Parameter List> | <Empty>
+void OptParameterList() {
+	if (token.type == "NotToken" || token.type == "COMMENT") {
+		Empty();
+	}
+	else {
+		ParameterList();
+		Print(6);
+	}
+}
+
+//R7: <Parameter List> → <Parameter> <Parameter List’>
+void ParameterList() {
+	Parameter();
+	ParameterListP();
+	Print(7);
+}
+
+//R8: <Parameter List’> → , <Parameter List> |  𝜀
+void ParameterListP() {
+	if (token.type == "NotToken" || token.type == "COMMENT") {
+		Empty();
+	}
+	else {
+		if (token.value == ",") {
+			ParameterList();
+			Print(8);
+		}
+		else Error();
+	}
+}
+
+//R9: <Parameter> → <IDs> : <Qualifier>
+void Parameter() {
+	IDs();
+	if (lexer(s).value == ":") {
+		Qualifier();
+		Print(9);
+	}
+	else Error();
+}
+
+//R10: <Qualifier> → int | boolean | real
+void Qualifier() {
+	if(token.value == "int" || token.value == "boolean" || token.value == "real"){
+		Print(10);
+	}
+	else Error();
+}
+
+//R11:	<Body> → { <Statement List> }
+void Body() {
+	if (token.value == "{") {
+		StatementList();
+		if (lexer(s).value == "}") {
+			Print(11);
+		}
+		else Error();
+	}
+	else Error();
+}
+
+//R12: <Opt Declaration List> → <Declaration List> | <Empty>
+void OptDeclarationList() {
+	if (token.type == "NotToken" || token.type == "COMMENT") {
+		Empty();
+	}
+	else {
+		DeclarationList();
+		Print(12);
+	}
+}
