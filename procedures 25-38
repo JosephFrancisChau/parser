@@ -173,8 +173,8 @@ void Primary() {
 //R38: <Empty> → 𝜀
 void Empty() {}
 
-PrintRule(num) {
-	switch (num) {
+void PrintRule(int ruleNum) {
+	switch (ruleNum) {
 		case 1: 
 			coutfile << "<Rat18S> → <Opt Function Definitions> %% <Opt Declaration List> <Statement List>" << endl;
 			break;
