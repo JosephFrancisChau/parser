@@ -1,13 +1,10 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include <iostream>
 #include "lexer.h"
 
 Token token;
 int ruleNum;
 string s;
-
-void Print(int ruleNum) {}
-void Empty() {}
 
 void Parser(Token token) {
 	Rat18S(token);
@@ -17,7 +14,7 @@ void Error() {
 	cout << "Syntax Error!" << endl;
 }
 
-void Print(int ruleNum) {}
+void PrintRule(int ruleNum) {}
 void Empty() {}
 
 //R1: <Rat18S> → <Opt Function Definitions> %% <Opt Declaration List> <Statement List>
@@ -26,7 +23,7 @@ void Rat18S(Token token) {
 	if (lexer(s).value == "%%") {
 		OptDeclarationList();
 		StatementList();
-		Print(1);
+		PrintRule(1);
 	}
 	else Error();
 	if (token.value != "$") Error();
@@ -39,7 +36,7 @@ void OptFunctionDefinitions() {
 	}
 	else {
 		FunctionDefinitions();
-		Print(2);
+		PrintRule(2);
 	}
 }
 
@@ -47,7 +44,7 @@ void OptFunctionDefinitions() {
 void FunctionDefinitions() {
 	Function();
 	FunctionDefinitionsP();
-	Print(3);
+	PrintRule(3);
 }
 
 //R4: <Function Definitions’> → <Function Definitions> |  𝜀
@@ -57,7 +54,7 @@ void FunctionDefinitionsP() {
 	}
 	else {
 		FunctionDefinitions();
-		Print(4);
+		PrintRule(4);
 	}
 }
 
@@ -70,7 +67,7 @@ void Fuction() {
 			if (lexer(s).value == "]") {
 				OptDeclarationList();
 				Body();
-				Print(5);
+				PrintRule(5);
 			}
 			else Error();
 		}
@@ -86,7 +83,7 @@ void OptParameterList() {
 	}
 	else {
 		ParameterList();
-		Print(6);
+		PrintRule(6);
 	}
 }
 
@@ -94,7 +91,7 @@ void OptParameterList() {
 void ParameterList() {
 	Parameter();
 	ParameterListP();
-	Print(7);
+	PrintRule(7);
 }
 
 //R8: <Parameter List’> → , <Parameter List> |  𝜀
@@ -105,7 +102,7 @@ void ParameterListP() {
 	else {
 		if (token.value == ",") {
 			ParameterList();
-			Print(8);
+			PrintRule(8);
 		}
 		else Error();
 	}
@@ -116,7 +113,7 @@ void Parameter() {
 	IDs();
 	if (lexer(s).value == ":") {
 		Qualifier();
-		Print(9);
+		PrintRule(9);
 	}
 	else Error();
 }
@@ -124,7 +121,7 @@ void Parameter() {
 //R10: <Qualifier> → int | boolean | real
 void Qualifier() {
 	if(token.value == "int" || token.value == "boolean" || token.value == "real"){
-		Print(10);
+		PrintRule(10);
 	}
 	else Error();
 }
@@ -134,7 +131,7 @@ void Body() {
 	if (token.value == "{") {
 		StatementList();
 		if (lexer(s).value == "}") {
-			Print(11);
+			PrintRule(11);
 		}
 		else Error();
 	}
@@ -148,6 +145,6 @@ void OptDeclarationList() {
 	}
 	else {
 		DeclarationList();
-		Print(12);
+		PrintRule(12);
 	}
 }
