@@ -126,6 +126,10 @@ void Empty();
 
 void PrintRule(int ruleNum);
 
+void Identifier();
+
+void Integer();
+
 
 
 
