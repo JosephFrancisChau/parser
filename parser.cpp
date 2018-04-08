@@ -1,6 +1,4 @@
-
-#include "parser.hpp"
-#include <iostream>
+#include "parser.h"
 #include "lexer.h"
 #include <fstream>
 #include "globals.h"
@@ -11,7 +9,8 @@ Token token;
 int ruleNum;
 string s;
 
-ofstream coutfile(outputFile, std::ios_base::app);
+//ofstream coutfile(outputFile, std::ios_base::app);
+//ofstream coutfile;
 
 void Parser(Token token) {
     Rat18S(token);
@@ -494,6 +493,9 @@ void Primary() {
 void Empty(){}
 
 void PrintRule(int ruleNum) {
+    ofstream coutfile;
+    coutfile.open(outputFile, std::ios_base::app);
+    
     switch (ruleNum) {
         case 1:
             coutfile << "<Rat18S> → <Opt Function Definitions> %% <Opt Declaration List> <Statement List>" << endl;
@@ -610,6 +612,7 @@ void PrintRule(int ruleNum) {
             coutfile << "Syntax Error" << endl;
             break;
     }
+    coutfile.close();
 }
 
 void Identifier(){

@@ -1,12 +1,11 @@
-#include "lexer.cpp"
 #include <stdio.h>
 #include <fstream>
 #include <iostream>
 #include "lexer.h"
 #include "globals.h"
 
-#ifndef parser_hpp
-#define parser_hpp
+#ifndef parser_h
+#define parser_h
 
 
 void Parser(Token token);
@@ -131,4 +130,4 @@ void Integer();
 void Real();
 
 
-#endif /* parser_hpp */
+#endif /* parser_h */
