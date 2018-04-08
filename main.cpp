@@ -8,7 +8,7 @@ string outputFile;
 
 int main(int argc, const char * argv[]) {
     string inputFile, word, ofile;
-    ifstream sourceFile;
+    //ifstream sourceFile;
     Token start;
     
     //test sample source code
@@ -17,15 +17,31 @@ int main(int argc, const char * argv[]) {
     
     cout << "Enter test output file name(format: filename.txt): ";
     cin >> outputFile;
-    //readFile(sourceFile);
     
-    if (sourceFile.is_open()){
-        while (sourceFile >> word){
-            vector<string> vec = splitWord(word);
-            start = lexer(word);
-        }
+    ifstream sourceFile(inputFile);
+    
+    if (sourceFile.is_open()) {
+                while (sourceFile >> word) {
+                    vector<string> vec = splitWord(word);
+                    Token start = lexer(word);
+                    for (unsigned i = 0; i < vec.size(); ++i) {
+                        start = lexer(vec.at(i));
+//                        if (!(token.type == "NotToken" || token.type == "COMMENT")) {
+//                            cout << left << setw(10) << token.type << "\t\t" << token.value << endl;
+//                            coutfile << left << setw(10) << token.type << "\t\t" << token.value << endl;
+//                        }
+                        Parser(start);
+                    }
+                }
+            }
+    else {
+        cout << "Can't open the file: " << inputFile << endl;
     }
-    Parser(start);
+    
+    sourceFile.close();
+    
+    
+    
     return 0;
 }
 
