@@ -1,4 +1,6 @@
 #include <string>
+#include <fstream>
+#include "lexer.h"
 using namespace std;
 
 #ifndef globals_h

@@ -5,11 +5,13 @@
 using namespace std;
 
 string outputFile;
+Token start;
+//fstream coutfile(outputFile);
 
 int main(int argc, const char * argv[]) {
     string inputFile, word, ofile;
     //ifstream sourceFile;
-    Token start;
+    
     
     //test sample source code
     cout << "Enter test file name(format: filename.txt): ";
@@ -17,6 +19,9 @@ int main(int argc, const char * argv[]) {
     
     cout << "Enter test output file name(format: filename.txt): ";
     cin >> outputFile;
+    
+    fstream coutfile;
+    coutfile.open(outputFile, fstream::out);
     
     ifstream sourceFile(inputFile);
     
@@ -26,10 +31,6 @@ int main(int argc, const char * argv[]) {
                     Token start = lexer(word);
                     for (unsigned i = 0; i < vec.size(); ++i) {
                         start = lexer(vec.at(i));
-//                        if (!(token.type == "NotToken" || token.type == "COMMENT")) {
-//                            cout << left << setw(10) << token.type << "\t\t" << token.value << endl;
-//                            coutfile << left << setw(10) << token.type << "\t\t" << token.value << endl;
-//                        }
                         Parser(start);
                     }
                 }
@@ -39,7 +40,6 @@ int main(int argc, const char * argv[]) {
     }
     
     sourceFile.close();
-    
     
     
     return 0;
