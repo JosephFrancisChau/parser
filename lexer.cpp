@@ -7,7 +7,6 @@
 //			Note (1) : If the word is not a legal token, the returned type is "NotToken".
 //          Note (2) : if the word is a comment, the returned type is "COMMENT"
 
-//#include "stdafx.h"
 #include "lexer.h"
 #include <iostream>
 #include <map>

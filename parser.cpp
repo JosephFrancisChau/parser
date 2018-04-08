@@ -1,18 +1,17 @@
-//
-//  parser.cpp
-//  parser
-//
-//
 
 #include "parser.hpp"
-
-//#include "stdafx.h"
 #include <iostream>
 #include "lexer.h"
+#include <fstream>
+#include "globals.h"
+
+using namespace std;
 
 Token token;
 int ruleNum;
 string s;
+
+ofstream coutfile(outputFile, std::ios_base::app);
 
 void Parser(Token token) {
     Rat18S(token);
@@ -65,6 +64,7 @@ void FunctionDefinitionsP() {
 
 //R5: <Function> → function <Identifier> [<Opt Parameter List>] <Opt Declaration List> <Body>
 void Function() {
+    //int rule = 5;
     if (token.value == "function") {
         Identifier();
         if (lexer(s).value == "[") {
@@ -491,7 +491,7 @@ void Primary() {
 }
 
 //R38: <Empty> → 𝜀
-void Empty() {}
+void Empty(){}
 
 void PrintRule(int ruleNum) {
     switch (ruleNum) {
@@ -612,3 +612,23 @@ void PrintRule(int ruleNum) {
     }
 }
 
+void Identifier(){
+    if(token.type == "identifier"){
+    }
+    else
+        Error();
+}
+
+void Real(){
+    if(token.type == "real"){
+    }
+    else
+        Error();
+}
+
+void Integer(){
+    if(token.type == "intger"){
+    }
+    else
+        Error();
+}
