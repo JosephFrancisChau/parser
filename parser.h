@@ -7,13 +7,12 @@
 #ifndef parser_h
 #define parser_h
 
-
-void Parser(Token token);
+void Parser(Token token, unsigned index);
 
 void Error();
 
 //R1: <Rat18S> → <Opt Function Definitions> %% <Opt Declaration List> <Statement List>
-void Rat18S(Token token);
+void Rat18S(Token token, unsigned index);
 
 //R2: <Opt Function Definitions> → <Function Definitions> | <Empty>
 void OptFunctionDefinitions();
