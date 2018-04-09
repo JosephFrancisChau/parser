@@ -3,7 +3,7 @@
 #include "parser.h"
 
 using namespace std;
-
+vector<string> allWords;
 string outputFile;
 Token start;
 //fstream coutfile(outputFile);
@@ -26,15 +26,21 @@ int main(int argc, const char * argv[]) {
     ifstream sourceFile(inputFile);
     
     if (sourceFile.is_open()) {
-                while (sourceFile >> word) {
-                    vector<string> vec = splitWord(word);
-                    Token start = lexer(word);
-                    for (unsigned i = 0; i < vec.size(); ++i) {
-                        start = lexer(vec.at(i));
-                        Parser(start);
-                    }
-                }
-            }
+                // call splitWord can creat allWords
+		while (sourceFile >> word) {
+			vector<string> vec = splitWord(word);
+			for (unsigned i = 0; i < vec.size(); ++i) {
+				allWords.push_back(vec.at(i));
+			}
+		}
+
+		//test the new code on allWords works or nor
+		for (unsigned i = 0; i < allWords.size(); ++i) {
+			Token token = lexer(allWords.at(i));
+			cout << token.type << "\t\t" << token.value << endl;
+			coutfile << token.type << "\t\t" << token.value << endl;
+		}	
+    }
     else {
         cout << "Can't open the file: " << inputFile << endl;
     }
