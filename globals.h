@@ -7,5 +7,7 @@ using namespace std;
 #define globals_h
 
 extern string outputFile;
+extern vector<string> allWords;
+extern unsigned index;
 
 #endif /* globals_h */
