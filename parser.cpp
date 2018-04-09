@@ -2,7 +2,6 @@
 #include "lexer.h"
 #include <fstream>
 #include "globals.h"
-
 using namespace std;
 
 vector<string> allWords;
