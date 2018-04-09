@@ -25,12 +25,12 @@ void Error() {
 
 //R1: <Rat18S> → <Opt Function Definitions> %% <Opt Declaration List> <Statement List>
 void Rat18S(Token token, unsigned index) {
+	PrintRule(1);
 	OptFunctionDefinitions();
 	Token temp = lexer(allWords.at(++index));
 	if (temp.value == "%%") {
 		OptDeclarationList();
 		StatementList();
-		PrintRule(1);
 	}
 	else Error();
 	if (token.value != "$") Error();
@@ -38,49 +38,45 @@ void Rat18S(Token token, unsigned index) {
 
 //R2: <Opt Function Definitions> → <Function Definitions> | <Empty>
 void OptFunctionDefinitions() {
+	PrintRule(2);
 	if (token.type == "NotToken" || token.type == "COMMENT") {
 		Empty();
 	}
 	else {
 		FunctionDefinitions();
 	}
-	PrintRule(2);
 }
 
 //R3: <Function Definitions> → <Function> <Function Definitions’>
 void FunctionDefinitions() {
+	PrintRule(3);
 	Function();
 	FunctionDefinitionsP();
-	PrintRule(3);
 }
 
 //R4: <Function Definitions’> → <Function Definitions> |  𝜀
 void FunctionDefinitionsP() {
+	PrintRule(4);
 	if (token.type == "NotToken" || token.type == "COMMENT") {
 		Empty();
 	}
 	else {
 		FunctionDefinitions();
 	}
-	PrintRule(4);
 }
 
 //R5: <Function> → function <Identifier> [<Opt Parameter List>] <Opt Declaration List> <Body>
 void Function() {
+	PrintRule(5);
 	if (token.value == "function") {
-
-		if (lexer(allWords.at(++index)).type == "identifier") {
-
-			Identifier();
-
-			if (lexer(allWords.at(++index)).value == "[") {
-				OptParameterList();
-				if (lexer(allWords.at(++index)).value == "]") {
-					OptDeclarationList();
-					Body();
-					PrintRule(5);
-				}
-				else Error();
+		Identifier();
+		Token temp1 = lexer(allWords.at(++index));
+		if (temp1.value == "[") {
+			OptParameterList();
+			Token temp2 = lexer(allWords.at(++index));
+			if (temp2.value == "]") {
+				OptDeclarationList();
+				Body();
 			}
 			else Error();
 		}
@@ -91,64 +87,59 @@ void Function() {
 
 //R6: <Opt Parameter List> → <Parameter List> | <Empty>
 void OptParameterList() {
+	PrintRule(6);
 	if (token.type == "NotToken" || token.type == "COMMENT") {
 		Empty();
 	}
 	else {
 		ParameterList();
 	}
-	PrintRule(6);
 }
 
 //R7: <Parameter List> → <Parameter> <Parameter List’>
 void ParameterList() {
+	PrintRule(7);
 	Parameter();
 	ParameterListP();
-	PrintRule(7);
 }
 
 //R8: <Parameter List’> → , <Parameter List> |  𝜀
 void ParameterListP() {
+	PrintRule(8);
 	if (token.type == "NotToken" || token.type == "COMMENT") {
 		Empty();
-		PrintRule(8);
 	}
-	else {
-		if (token.value == ",") {
-			ParameterList();
-			PrintRule(8);
-		}
-		else Error();
+	else if (token.value == ",") {
+		ParameterList();
 	}
+	else Error();
 }
 
 //R9: <Parameter> → <IDs> : <Qualifier>
 void Parameter() {
+	PrintRule(9);
 	IDs();
 	Token temp=lexer(allWords.at(++index));
 	if (temp.value == ":") {
 		Qualifier();
-		PrintRule(9);
 	}
 	else Error();
 }
 
 //R10: <Qualifier> → int | boolean | real
 void Qualifier() {
-	if (token.value == "int" || token.value == "boolean" || token.value == "real") {
-		PrintRule(10);
-	}
+	PrintRule(10);
+	if (token.value == "int" || token.value == "boolean" || token.value == "real") {	}
 	else Error();
 }
 
 //R11: <Body> → { <Statement List> }
 void Body() {
-	Token temp = lexer(allWords.at(++index));
+	PrintRule(11);
 	if (token.value == "{") {
 		StatementList();
-		if (temp.value == "}") {
-			PrintRule(11);
-		}
+		Token temp = lexer(allWords.at(++index));
+		if (temp.value == "}") {}
 		else Error();
 	}
 	else Error();
@@ -156,143 +147,140 @@ void Body() {
 
 //R12: <Opt Declaration List> → <Declaration List> | <Empty>
 void OptDeclarationList() {
+	PrintRule(12);
 	if (token.type == "NotToken" || token.type == "COMMENT") {
 		Empty();
 	}
 	else {
 		DeclarationList();
 	}
-	PrintRule(12);
 }
 
 //R13: <Declaration List> → <Declaration> ; <Declaration List’>
 void DeclarationList() {
+	PrintRule(13);
 	Declaration();
 	Token temp = lexer(allWords.at(++index));
 	if (temp.value == ";") {
 		DeclarationListP();
-		PrintRule(13);
 	}
 	else
 		Error();
 }
 
 //R14: <Declaration List’> → <Declaration List> | <Empty>
-void DeclarationListP()
-{
-	if (token.type == "NotToken" || token.type == "COMMENT")
-	{
+void DeclarationListP(){
+	PrintRule(14);
+	if (token.type == "NotToken" || token.type == "COMMENT")	{
 		Empty();
-		PrintRule(14);
 	}
-	else
-	{
+	else	{
 		DeclarationList();
 	}
 }
 
 //R15: <Declaration> → <Qualifier> <IDs>
 void Declaration() {
+	PrintRule(15);
 	Qualifier();
 	IDs();
-	PrintRule(15);
 }
 
 //R16: <IDs> → <Identifier> <IDs’>
 void IDs() {
-	Identifier();
-	IDsP();
 	PrintRule(16);
+	Identifier();
+	IDsP();	
 }
 
 //R17: <IDs’> → , <IDs> | <Empty>
 void IDsP() {
+	PrintRule(17);
 	if (token.type == "NotToken" || token.type == "COMMENT") {
 		Empty();
-		PrintRule(17);
 	}
-	else {
-		if (token.value == ",") {
-			IDs();
-			PrintRule(17);
-		}
-		else
-			Error();
+	else if (token.value == ",") {
+		IDs();
 	}
+	else	Error();
 }
 
 //R18: <Statement List> → <Statement> <Statement List’>
 void StatementList() {
+	PrintRule(18);
 	Statement();
 	StatementListP();
-	PrintRule(18);
 }
 
 //R19: <Statement List’> → <Statement List> | <Empty>
 void StatementListP() {
+	PrintRule(19);
 	if (token.type == "NotToken" || token.type == "COMMENT") {
 		Empty();
 	}
 	else {
 		StatementList();
-	}
-	PrintRule(19);
+	}	
 }
 
 //R20: <Statement> → <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>
 void Statement() {
+	PrintRule(20);
+	Token temp = lexer(allWords.at(++index));
+
 	// Check if <Compound>
 	if (token.value == "{") {
 		Compound();
 	}
 
 	// Check if <Assign>
-	Token temp = lexer(allWords.at(++index));
-	if (temp.type == "identifier") {
-		if (temp.value == ":") {
-			Assign();
-		}
+	else if (temp.type == "identifier") {
+		Assign();
 	}
 
 	// Check <If>
-	if (token.type == "keyword" && token.value == "if") {
-		Token temp = lexer(allWords.at(++index));
-		if (temp.value == "(") {
-			If();
-		}
+	else if (token.type == "keyword" && token.value == "if") {
+		If();
 	}
 
 	// Check <Return>
-	if (token.type == "keyword" && token.value == "return") {
+	else if (token.type == "keyword" && token.value == "return") {
 		Return();
 	}
 
 	// Check <Print>
-	if (token.type == "keyword" && token.value == "Print") {
+	else if (token.type == "keyword" && token.value =="put") {
 		Print();
 	}
 
 	// Check <Scan>
-	if (token.type == "keyword" && token.value == "get") {
+	else if (token.type == "keyword" && token.value == "get") {
 		Scan();
 	}
 
 	// Check <While>
-	if (token.type == "keyword" && token.value == "while") {
+	else if (token.type == "keyword" && token.value == "while") {
 		While();
 	}
 
 	else Error();
-
 }
 
 //R21: <Compound> → { <Statement List> }
 void Compound() {
-	Body();
+	PrintRule(21);
+	if (token.value == "{") {
+		StatementList();
+		Token temp = lexer(allWords.at(++index));
+		if (temp.value == "}") {}
+		else Error();
+	}
+	else Error();
 }
 
 //R22: <Assign> → <Identifier> = <Expressions> ;
 void Assign() {
+	PrintRule(22);
 	Identifier();
 	Token temp = lexer(allWords.at(++index));
 	if (temp.value == "=") {
@@ -304,29 +292,34 @@ void Assign() {
 
 //R23: <If> → if ( <Condition> ) <Statement> <If’> endif
 void If() {
-	Condition();
-	Token temp = lexer(allWords.at(++index));
-	if (temp.value == ")") {
-		Statement();
-		IfP();
-		if (temp.value == "endif")
-			PrintRule(23);
-		else
-			Error();
+	PrintRule(23);
+	if (token.value == "if") {
+		Token temp1 = lexer(allWords.at(++index));
+		if (temp1.value == "(") {
+			Condition();
+			Token temp2 = lexer(allWords.at(++index));
+			if (temp2.value == ")") {
+				Statement();
+				IfP();
+				Token temp3 = lexer(allWords.at(++index));
+				if (temp3.value == "endif") {}
+				else
+					Error();
+			}
+		}
 	}
+	else Error();
 }
 
 //R24: <If’> → else <Statement> | <Empty>
 void IfP() {
+	PrintRule(24);
 	if (token.type == "NotToken" || token.type == "COMMENT") {
 		Empty();
-		PrintRule(24);
 	}
 	else {
-		Token temp = lexer(allWords.at(++index));
-		if (temp.value == "else") {
+		if (token.value == "else") {
 			Statement();
-			PrintRule(24);
 		}
 		else
 			Error();
@@ -335,12 +328,11 @@ void IfP() {
 
 //R25: <Return> → return <Return’> ;
 void Return() {
-	Token temp = lexer(allWords.at(++index));
+	PrintRule(25);
 	if (token.value == "return") {
 		ReturnP();
-		if (temp.value == ";") {
-			PrintRule(25);
-		}
+		Token temp = lexer(allWords.at(++index));
+		if (temp.value == ";") {}
 		else
 			Error();
 	}
@@ -349,26 +341,27 @@ void Return() {
 
 //R26: <Return’> → <Expression> | 𝜀
 void ReturnP() {
+	PrintRule(26);
 	if (token.type == "Not Token" || token.type == "COMMENT") {
 		Empty();
 	}
 	else {
 		Expression();
 	}
-	PrintRule(26);
+	
 }
 
 //R27: <Print> → put (<Expression>);
 void Print() {
-	Token temp = lexer(allWords.at(++index));
+	PrintRule(27);
 	if (token.value == "put") {
-		if (temp.value == "(") {
+		Token temp1 = lexer(allWords.at(++index));
+		if (temp1.value == "(") {
 			Expression();
 			Token temp2 = lexer(allWords.at(++index));
-			if (temp.value == ")") {
-				if (lexer(allWords.at(++index).value == ";") {
-					PrintRule(27);
-				}
+			if (temp2.value == ")") {
+				Token temp3 = lexer(allWords.at(++index));
+				if (temp3.value == ";") {}
 				else Error();
 			}
 			else Error();
@@ -380,13 +373,15 @@ void Print() {
 
 //R28: <Scan> → get(<IDs>);
 void Scan() {
+	PrintRule(28);
 	if (token.value == "get") {
-		if (lexer(allWords.at(++index).value == "(") {
+		Token temp1 = lexer(allWords.at(++index));
+		if (temp1.value == "(") {
 			IDs();
-			if (lexer(allWords.at(++index).value == ")") {
-				if (lexer(allWords.at(++index).value == ";") {
-					PrintRule(28);
-				}
+			Token temp2 = lexer(allWords.at(++index));
+			if (temp2.value == ")") {
+				Token temp3 = lexer(allWords.at(++index));
+				if (temp3.value == ";") {}
 				else Error();
 			}
 			else Error();
@@ -398,12 +393,14 @@ void Scan() {
 
 //R29: <While> → while (<Condition>) <Statement>
 void While() {
+	PrintRule(29);
 	if (token.value == "while") {
-		if (lexer(allWords.at(++index).value == "(") {
+		Token temp1 = lexer(allWords.at(++index));
+		if (temp1.value == "(") {
 			Condition();
-			if (lexer(allWords.at(++index).value == ")") {
+			Token temp2 = lexer(allWords.at(++index));
+			if (temp2.value == ")") {
 				Statement();
-				PrintRule(29);
 			}
 			else Error();
 		}
@@ -414,103 +411,104 @@ void While() {
 
 //R30: <Condition> → <Expression> <Relop> <Expression>
 void Condition() {
+	PrintRule(30);
 	Expression();
 	Relop();
 	Expression();
-
-	PrintRule(30);
 }
 
 //R31: <Relop> → == | ^= | > | < | => | =<
 void Relop() {
-	if (token.value == "==" || token.value == "^=" || token.value == ">" || token.value == "<" || token.value == "=>" || token.value == "=<") {
-		PrintRule(31);
-	}
+	PrintRule(31);
+	if (token.value == "==" || token.value == "^=" || token.value == ">" ||
+		token.value == "<" || token.value == "=>" || token.value == "=<") {}
 	else Error();
 }
 
 //R32: <Expression> → <Term> <Expression’>
 void Expression() {
+	PrintRule(32);
 	Term();
 	ExpressionP();
-	PrintRule(32);
 }
 
 //R33: <Expression’> → + <Term> <Expression’> | - <Term> <Expression’> | 𝜀
 void ExpressionP() {
+	PrintRule(33);
 	if (token.type == "Not Token" || token.type == "COMMENT") {
 		Empty();
-		PrintRule(33);
 	}
 	else if (token.value == "+" || token.value == "-") {
 		Term();
 		ExpressionP();
-		PrintRule(33);
 	}
 	else Error();
 }
 
 //R34: <Term> → <Factor> <Term’>
 void Term() {
+	PrintRule(34);
 	Factor();
 	TermP();
-	PrintRule(34);
 }
 
 //R35: <Term’> → * <Factor> <Term’> | / <Factor> <Term’> | 𝜀
 void TermP() {
+	PrintRule(35);
 	if (token.type == "Not Token" || token.type == "COMMENT") {
 		Empty();
-		PrintRule(35);
 	}
 	else if (token.value == "*" || token.value == "/") {
 		Factor();
 		TermP();
-		PrintRule(35);
 	}
 	else Error();
 }
 
 //R36: <Factor> → - <Primary> | <Primary>
 void Factor() {
+	PrintRule(36);
 	if (token.value == "-") {
 		Primary();
-		PrintRule(36);
 	}
 	else {
 		Primary();
-		PrintRule(36);
 	}
 }
 
 //R37: <Primary> → <Identifier> | <Integer> | <Identifier> (<IDs>) | (<Expression>) | <Real> | true | false
 void Primary() {
-	if (token.type == "identifier") {
-		Identifier();
-		if (token.value == "(") {
-			IDs();
-		}
-		PrintRule(37);
+	PrintRule(37);
+	Token temp1 = lexer(allWords.at(++index));
+	if (token.type == "identifier" && temp1.value == "(") {
+		IDs();
+		Token temp2 = lexer(allWords.at(++index));
+		if (temp2.value == ")") {}
+		else Error();
 	}
-	else if (token.value == "integer") {
+	else if (token.type == "identifier") {
+		Identifier();
+	}
+	else if (token.type == "integer") {
 		Integer();
-		PrintRule(37);
 	}
 	else if (token.value == "(") {
 		Expression();
-		PrintRule(37);
+		Token temp = lexer(allWords.at(++index));
+		if (temp.value == ")") {}
+		else Error();
 	}
 	else if (token.type == "real") {
 		Real();
-		PrintRule(37);
 	}
-	else if (token.value == "true" || token.value == "false")
-		PrintRule(37);
+	else if (token.value == "true" || token.value == "false") {}
 	else Error();
 }
 
 //R38: <Empty> → 𝜀
-void Empty() {}
+void Empty() {
+	PrintRule(38);
+}
 
 void PrintRule(int ruleNum) {
 	fstream coutfile(outputFile, ios_base::app);
@@ -625,6 +623,9 @@ void PrintRule(int ruleNum) {
 		break;
 	case 37:
 		coutfile << "<Primary> → <Identifier> | <Integer> | <Identifier> (<IDs>) | (<Expression>) | <Real> | true | false" << endl;
+		break;
+	case 38:
+		coutfile << "<Empty> → e" << endl;
 		break;
 	default:
 		coutfile << "Syntax Error" << endl;
