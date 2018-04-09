@@ -64,15 +64,20 @@ void FunctionDefinitionsP() {
 
 //R5: <Function> → function <Identifier> [<Opt Parameter List>] <Opt Declaration List> <Body>
 void Function() {
-    //int rule = 5;
     if (token.value == "function") {
-        Identifier();
-        if (lexer(s).value == "[") {
-            OptParameterList();
-            if (lexer(s).value == "]") {
-                OptDeclarationList();
-                Body();
-                PrintRule(5);
+        
+        if (lexer(s).type == "identifier"){
+        
+            Identifier();
+      
+            if (lexer(s).value == "[") {
+                OptParameterList();
+                if (lexer(s).value == "]") {
+                    OptDeclarationList();
+                    Body();
+                    PrintRule(5);
+                }
+                else Error();
             }
             else Error();
         }
@@ -613,167 +618,6 @@ void PrintRule(int ruleNum) {
     }
     coutfile.close();
 }
-
-//void PrintRule(int ruleNum) {
-//    ofstream coutfile;
-//    coutfile.open(outputFile, std::ios_base::app);
-//
-//    switch (ruleNum) {
-//        case 1:
-//            coutfile << "<Rat18S> → <Opt Function Definitions> %% <Opt Declaration List> <Statement List>" << endl;
-//            coutfile.close();
-//            break;
-//        case 2:
-//            coutfile << "<Opt Function Definitions> → <Function Definitions> | <Empty>" << endl;
-//            coutfile.close();
-//            break;
-//        case 3:
-//            coutfile << "<Function Definitions> → <Function> <Function Definitions’>" << endl;
-//            coutfile.close();
-//            break;
-//        case 4:
-//            coutfile << "<Function Definitions’> → <Function Definitions> |  𝜀" << endl;
-//            coutfile.close();
-//            break;
-//        case 5:
-//            coutfile << "<Function> → function <Identifier> [<Opt Parameter List>] <Opt Declaration List> <Body>" << endl;
-//            coutfile.close();
-//            break;
-//        case 6:
-//            coutfile << "<Opt Parameter List> → <Parameter List> | <Empty>" << endl;
-//            coutfile.close();
-//            break;
-//        case 7:
-//            coutfile << "<Parameter List> → <Parameter> <Parameter List’>" << endl;
-//            coutfile.close();
-//            break;
-//        case 8:
-//            coutfile << "<Parameter List’> → , <Parameter List> |  𝜀" << endl;
-//            coutfile.close();
-//            break;
-//        case 9:
-//            coutfile << "<Parameter> → <IDs> : <Qualifier>" << endl;
-//            coutfile.close();
-//            break;
-//        case 10:
-//            coutfile << "<Qualifier> → int | boolean | real" << endl;
-//            coutfile.close();
-//            break;
-//        case 11:
-//            coutfile << "<Body> → { <Statement List> }" << endl;
-//            coutfile.close();
-//            break;
-//        case 12:
-//            coutfile << "<Opt Declaration List> → <Declaration List> | <Empty>" << endl;
-//            coutfile.close();
-//            break;
-//        case 13:
-//            coutfile << "<Declaration List> → <Declaration> ; <Declaration List’>" << endl;
-//            coutfile.close();
-//            break;
-//        case 14:
-//            coutfile << "<Declaration List’> → <Declaration List> | 𝜀" << endl;
-//            coutfile.close();
-//            break;
-//        case 15:
-//            coutfile << "<Declaration> → <Qualifier> <IDs>" << endl;
-//            coutfile.close();
-//            break;
-//        case 16:
-//            coutfile << "<IDs> → <Identifier> <IDs’>" << endl;
-//            coutfile.close();
-//            break;
-//        case 17:
-//            coutfile << "<IDs’> → , <IDs> | 𝜀" << endl;
-//            coutfile.close();
-//            break;
-//        case 18:
-//            coutfile << "<Statement List> → <Statement> <Statement List’>" << endl;
-//            coutfile.close();
-//            break;
-//        case 19:
-//            coutfile << "<Statement List’> → <Statement List> | 𝜀" << endl;
-//            coutfile.close();
-//            break;
-//        case 20:
-//            coutfile << "<Statement> → <Compound> | <Assign> | <If> | <Return> | <Print> | <Scan> | <While>" << endl;
-//            coutfile.close();
-//            break;
-//        case 21:
-//            coutfile << "<Compound> → { <Statement List> }" << endl;
-//            coutfile.close();
-//            break;
-//        case 22:
-//            coutfile << "<Assign> → <Identifier> = <Expressions> ;" << endl;
-//            coutfile.close();
-//            break;
-//        case 23:
-//            coutfile << "<If> →  if ( <Condition> ) <Statement> <If’> endif" << endl;
-//            coutfile.close();
-//            break;
-//        case 24:
-//            coutfile << "<If’> → else <Statement> | 𝜀" << endl;
-//            coutfile.close();
-//            break;
-//        case 25:
-//            coutfile << "<Return> → return <Return’> ;" << endl;
-//            coutfile.close();
-//            break;
-//        case 26:
-//            coutfile << "<Return’> → <Expression> | 𝜀" << endl;
-//            coutfile.close();
-//            break;
-//        case 27:
-//            coutfile << "<Print> → put (<Expression>);" << endl;
-//            coutfile.close();
-//            break;
-//        case 28:
-//            coutfile << "<Scan> → get(<IDs>);" << endl;
-//            coutfile.close();
-//            break;
-//        case 29:
-//            coutfile << "<While> → while (<Condition>) <Statement>" << endl;
-//            coutfile.close();
-//            break;
-//        case 30:
-//            coutfile << "<Condition> → <Expression> <Relop> <Expression>" << endl;
-//            coutfile.close();
-//            break;
-//        case 31:
-//            coutfile << "<Relop> → == | ^= | > | < | => | =<" << endl;
-//            coutfile.close();
-//            break;
-//        case 32:
-//            coutfile << "<Expression> → <Term> <Expression’>" << endl;
-//            coutfile.close();
-//            break;
-//        case 33:
-//            coutfile << "<Expression’> → + <Term> <Expression’> | - <Term> <Expression’> | 𝜀" << endl;
-//            coutfile.close();
-//            break;
-//        case 34:
-//            coutfile << "<Term> → <Factor> <Term’>" << endl;
-//            coutfile.close();
-//            break;
-//        case 35:
-//            coutfile << "<Term’> → * <Factor> <Term’> | / <Factor> <Term’> | 𝜀" << endl;
-//            coutfile.close();
-//            break;
-//        case 36:
-//            coutfile << "<Factor> → - <Primary> | <Primary>" << endl;
-//            coutfile.close();
-//            break;
-//        case 37:
-//            coutfile << "<Primary> → <Identifier> | <Integer> | <Identifier> (<IDs>) | (<Expression>) | <Real> | true | false" << endl;
-//            coutfile.close();
-//            break;
-//        default:
-//            coutfile << "Syntax Error" << endl;
-//            coutfile.close();
-//            break;
-//    }
-//
-//}
 
 void Identifier(){
     if(token.type == "identifier"){
