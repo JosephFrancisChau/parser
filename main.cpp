@@ -1,6 +1,8 @@
+#include "stdafx.h"
 #include "lexer.h"
 #include "globals.h"
 #include "parser.h"
+#include <iomanip>  //setw
 
 using namespace std;
 vector<string> allWords;
@@ -34,14 +36,15 @@ int main(int argc, const char * argv[]) {
 				allWords.push_back(vec.at(i));
 			}
 		}
-
+		
 		//test the new code on allWords works or nor
 		for (unsigned i = 0; i < allWords.size(); ++i) {
 			Token start = lexer(allWords.at(i));
-			cout << start.type << "\t\t" << start.value << endl;
-			coutfile << start.type << "\t\t" << start.value << endl;
+			cout << left << setw(10) << "Token:" << start.type << "\t\t" << "Lexeme: "<< start.value << endl;
+			coutfile << left << setw(10) << "Token:" << start.type << "\t\t" << "Lexeme: " << start.value << endl;
 			index = i;
 			Parser(start, index);
+			coutfile.close();
 		}	
 
 
