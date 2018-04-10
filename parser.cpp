@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "parser.h"
 #include "lexer.h"
 #include <fstream>
@@ -25,8 +25,8 @@ void Error() {
 	fstream coutfile(outputFile, ios_base::app);
 	cout << "Syntax Error!" << endl;
 	coutfile << "Syntax Error!" << endl;
-	exit(0);
 	coutfile.close();
+	exit(0);
 }
 
 //R1: <Rat18S> → <Opt Function Definitions> %% <Opt Declaration List> <Statement List>
@@ -64,9 +64,11 @@ void OptFunctionDefinitions() {
 
 //R3: <Function Definitions> → <Function> <Function Definitions’>
 void FunctionDefinitions() {
+	fstream coutfile(outputFile, ios_base::app);
 	PrintRule(3);
 	Function();
 	Token temp1 = lexer(allWords.at(++index));
+	coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 	FunctionDefinitionsP(temp1);
 }
 
@@ -86,16 +88,23 @@ void Function() {
 	PrintRule(5);
 	if (token.value == "function") {
 		Token temp1 = lexer(allWords.at(++index));
+		fstream coutfile(outputFile, ios_base::app);
+		coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 		Identifier(temp1);
 		Token temp2 = lexer(allWords.at(++index));
+		coutfile << left << setw(10) << temp2.type << "\t\t" << temp2.value << endl;
 		if (temp2.value == "[") {
 			Token temp3 = lexer(allWords.at(++index));
+			coutfile << left << setw(10) << temp3.type << "\t\t" << temp3.value << endl;
 			OptParameterList(temp3);
 			Token temp4 = lexer(allWords.at(++index));
+			coutfile << left << setw(10) << temp4.type << "\t\t" << temp4.value << endl;
 			if (temp4.value == "]") {
 				Token temp5 = lexer(allWords.at(++index));
+				coutfile << left << setw(10) << temp5.type << "\t\t" << temp5.value << endl;
 				OptDeclarationList(temp5);
 				Token temp6 = lexer(allWords.at(++index));
+				coutfile << left << setw(10) << temp6.type << "\t\t" << temp6.value << endl;
 				Body(temp6);
 			}
 			else Error();
@@ -121,6 +130,8 @@ void ParameterList(Token t) {
 	PrintRule(7);
 	Parameter(t);
 	Token temp1 = lexer(allWords.at(++index));
+	fstream coutfile(outputFile, ios_base::app);
+	coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 	ParameterListP(temp1);
 }
 
@@ -132,6 +143,8 @@ void ParameterListP(Token t) {
 	}
 	else if (t.value == ",") {
 		Token temp1 = lexer(allWords.at(++index));
+		fstream coutfile(outputFile, ios_base::app);
+		coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 		ParameterList(temp1);
 	}
 	else Error();
@@ -142,8 +155,11 @@ void Parameter(Token t) {
 	PrintRule(9);
 	IDs(t);
 	Token temp = lexer(allWords.at(++index));
+	fstream coutfile(outputFile, ios_base::app);
+	coutfile << left << setw(10) << temp.type << "\t\t" << temp.value << endl;
 	if (temp.value == ":") {
 		Token temp1 = lexer(allWords.at(++index));
+		coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 		Qualifier(temp1);
 	}
 	else Error();
@@ -161,8 +177,11 @@ void Body(Token t) {
 	PrintRule(11);
 	if (t.value == "{") {
 		Token temp1 = lexer(allWords.at(++index));
+		fstream coutfile(outputFile, ios_base::app);
+		coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 		StatementList(temp1);
 		Token temp = lexer(allWords.at(++index));
+		coutfile << left << setw(10) << temp.type << "\t\t" << temp.value << endl;
 		if (temp.value == "}") {}
 		else Error();
 	}
@@ -185,8 +204,11 @@ void DeclarationList() {
 	PrintRule(13);
 	Declaration();
 	Token temp = lexer(allWords.at(++index));
+	fstream coutfile(outputFile, ios_base::app);
+	coutfile << left << setw(10) << temp.type << "\t\t" << temp.value << endl;
 	if (temp.value == ";") {
 		Token temp1 = lexer(allWords.at(++index));
+		coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 		DeclarationListP(temp1);
 	}
 	else
@@ -209,6 +231,8 @@ void Declaration() {
 	PrintRule(15);
 	Qualifier(token);
 	Token temp = lexer(allWords.at(++index));
+	fstream coutfile(outputFile, ios_base::app);
+	coutfile << left << setw(10) << temp.type << "\t\t" << temp.value << endl;
 	IDs(temp);
 }
 
@@ -217,6 +241,8 @@ void IDs(Token t) {
 	PrintRule(16);
 	Identifier(t);
 	Token temp = lexer(allWords.at(++index));
+	fstream coutfile(outputFile, ios_base::app);
+	coutfile << left << setw(10) << temp.type << "\t\t" << temp.value << endl;
 	IDsP(temp);
 }
 
@@ -228,6 +254,8 @@ void IDsP(Token t) {
 	}
 	if (t.value == ",") {
 		Token temp1 = lexer(allWords.at(++index));
+		fstream coutfile(outputFile, ios_base::app);
+		coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 		IDs(temp1);
 	}
 	//else	Error();
@@ -238,6 +266,8 @@ void StatementList(Token t) {
 	PrintRule(18);
 	Statement(t);
 	Token temp1 = lexer(allWords.at(++index));
+	fstream coutfile(outputFile, ios_base::app);
+	coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 	StatementListP(temp1);
 }
 
@@ -256,6 +286,8 @@ void StatementListP(Token t) {
 void Statement(Token t) {
 	PrintRule(20);
 	Token temp = lexer(allWords.at(++index));
+	fstream coutfile(outputFile, ios_base::app);
+	coutfile << left << setw(10) << temp.type << "\t\t" << temp.value << endl;
 
 	// Check if <Compound>
 	if (t.value == "{") {
@@ -300,8 +332,11 @@ void Compound() {
 	PrintRule(21);
 	if (token.value == "{") {
 		Token temp1 = lexer(allWords.at(++index));
+		fstream coutfile(outputFile, ios_base::app);
+		coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 		StatementList(temp1);
 		Token temp2 = lexer(allWords.at(++index));
+		coutfile << left << setw(10) << temp2.type << "\t\t" << temp2.value << endl;
 		if (temp2.value == "}") {}
 		else Error();
 	}
@@ -313,8 +348,11 @@ void Assign() {
 	PrintRule(22);
 	Identifier(token);
 	Token temp = lexer(allWords.at(++index));
+	fstream coutfile(outputFile, ios_base::app);
+	coutfile << left << setw(10) << temp.type << "\t\t" << temp.value << endl;
 	if (temp.value == "=") {
 		Token temp1 = lexer(allWords.at(++index));
+		coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 		Expression(temp1);
 	}
 	else
@@ -326,16 +364,23 @@ void If() {
 	PrintRule(23);
 	if (token.value == "if") {
 		Token temp1 = lexer(allWords.at(++index));
+		fstream coutfile(outputFile, ios_base::app);
+		coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 		if (temp1.value == "(") {
 			Token temp2 = lexer(allWords.at(++index));
+			coutfile << left << setw(10) << temp2.type << "\t\t" << temp2.value << endl;
 			Condition(temp2);
 			Token temp3 = lexer(allWords.at(++index));
+			coutfile << left << setw(10) << temp3.type << "\t\t" << temp3.value << endl;
 			if (temp3.value == ")") {
 				Token temp4 = lexer(allWords.at(++index));
+				coutfile << left << setw(10) << temp4.type << "\t\t" << temp4.value << endl;
 				Statement(temp4);
 				Token temp5 = lexer(allWords.at(++index));
+				coutfile << left << setw(10) << temp5.type << "\t\t" << temp5.value << endl;
 				IfP(temp5);
 				Token temp6 = lexer(allWords.at(++index));
+				coutfile << left << setw(10) << temp6.type << "\t\t" << temp6.value << endl;
 				if (temp6.value == "endif") {}
 				else
 					Error();
@@ -354,6 +399,8 @@ void IfP(Token t) {
 	else {
 		if (t.value == "else") {
 			Token temp1 = lexer(allWords.at(++index));
+			fstream coutfile(outputFile, ios_base::app);
+			coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 			Statement(temp1);
 		}
 		else
@@ -366,8 +413,11 @@ void Return() {
 	PrintRule(25);
 	if (token.value == "return") {
 		Token temp1 = lexer(allWords.at(++index));
+		fstream coutfile(outputFile, ios_base::app);
+		coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 		ReturnP(temp1);
 		Token temp2 = lexer(allWords.at(++index));
+		coutfile << left << setw(10) << temp2.type << "\t\t" << temp2.value << endl;
 		if (temp2.value == ";") {}
 		else
 			Error();
@@ -392,12 +442,17 @@ void Print() {
 	PrintRule(27);
 	if (token.value == "put") {
 		Token temp1 = lexer(allWords.at(++index));
+		fstream coutfile(outputFile, ios_base::app);
+		coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 		if (temp1.value == "(") {
 			Token temp2 = lexer(allWords.at(++index));
+			coutfile << left << setw(10) << temp2.type << "\t\t" << temp2.value << endl;
 			Expression(temp2);
 			Token temp3 = lexer(allWords.at(++index));
+			coutfile << left << setw(10) << temp3.type << "\t\t" << temp3.value << endl;
 			if (temp3.value == ")") {
 				Token temp4 = lexer(allWords.at(++index));
+				coutfile << left << setw(10) << temp4.type << "\t\t" << temp4.value << endl;
 				if (temp4.value == ";") {}
 				else Error();
 			}
@@ -413,12 +468,17 @@ void Scan() {
 	PrintRule(28);
 	if (token.value == "get") {
 		Token temp1 = lexer(allWords.at(++index));
+		fstream coutfile(outputFile, ios_base::app);
+		coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 		if (temp1.value == "(") {
 			Token temp2 = lexer(allWords.at(++index));
+			coutfile << left << setw(10) << temp2.type << "\t\t" << temp2.value << endl;
 			IDs(temp2);
 			Token temp3 = lexer(allWords.at(++index));
+			coutfile << left << setw(10) << temp3.type << "\t\t" << temp3.value << endl;
 			if (temp3.value == ")") {
 				Token temp4 = lexer(allWords.at(++index));
+				coutfile << left << setw(10) << temp4.type << "\t\t" << temp4.value << endl;
 				if (temp4.value == ";") {}
 				else Error();
 			}
@@ -434,12 +494,17 @@ void While() {
 	PrintRule(29);
 	if (token.value == "while") {
 		Token temp1 = lexer(allWords.at(++index));
+		fstream coutfile(outputFile, ios_base::app);
+		coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 		if (temp1.value == "(") {
 			Token temp2 = lexer(allWords.at(++index));
+			coutfile << left << setw(10) << temp2.type << "\t\t" << temp2.value << endl;
 			Condition(temp2);
 			Token temp3 = lexer(allWords.at(++index));
+			coutfile << left << setw(10) << temp3.type << "\t\t" << temp3.value << endl;
 			if (temp3.value == ")") {
 				Token temp4 = lexer(allWords.at(++index));
+				coutfile << left << setw(10) << temp4.type << "\t\t" << temp4.value << endl;
 				Statement(temp4);
 			}
 			else Error();
@@ -454,8 +519,11 @@ void Condition(Token t) {
 	PrintRule(30);
 	Expression(t);
 	Token temp1 = lexer(allWords.at(++index));
+	fstream coutfile(outputFile, ios_base::app);
+	coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 	Relop(temp1);
 	Token temp2 = lexer(allWords.at(++index));
+	coutfile << left << setw(10) << temp2.type << "\t\t" << temp2.value << endl;
 	Expression(temp2);
 }
 
@@ -472,8 +540,10 @@ void Relop(Token t) {
 void Expression(Token t) {
 	PrintRule(32);
 	Term(t);
-	Token temp = lexer(allWords.at(++index));
-	ExpressionP(temp);
+	Token temp1 = lexer(allWords.at(++index));
+	fstream coutfile(outputFile, ios_base::app);
+	coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
+	ExpressionP(temp1);
 }
 
 //R33: <Expression’> → + <Term> <Expression’> | - <Term> <Expression’> | 𝜀
@@ -484,8 +554,11 @@ void ExpressionP(Token t) {
 	}
 	else if (t.value == "+" || t.value == "-") {
 		Token temp1 = lexer(allWords.at(++index));
+		fstream coutfile(outputFile, ios_base::app);
+		coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 		Term(temp1);
 		Token temp2 = lexer(allWords.at(++index));
+		coutfile << left << setw(10) << temp2.type << "\t\t" << temp2.value << endl;
 		ExpressionP(temp2);
 	}
 	else Error();
@@ -495,8 +568,10 @@ void ExpressionP(Token t) {
 void Term(Token t) {
 	PrintRule(34);
 	Factor(t);
-	Token temp = lexer(allWords.at(++index));
-	TermP(temp);
+	Token temp1 = lexer(allWords.at(++index));
+	fstream coutfile(outputFile, ios_base::app);
+	coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
+	TermP(temp1);
 }
 
 //R35: <Term’> → * <Factor> <Term’> | / <Factor> <Term’> | 𝜀
@@ -507,8 +582,11 @@ void TermP(Token t) {
 	}
 	else if (token.value == "*" || token.value == "/") {
 		Token temp1 = lexer(allWords.at(++index));
+		fstream coutfile(outputFile, ios_base::app);
+		coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 		Factor(temp1);
 		Token temp2 = lexer(allWords.at(++index));
+		coutfile << left << setw(10) << temp2.type << "\t\t" << temp2.value << endl;
 		TermP(temp2);
 	}
 	else Error();
@@ -518,6 +596,8 @@ void TermP(Token t) {
 void Factor(Token t) {
 	PrintRule(36);
 	Token temp = lexer(allWords.at(++index));
+	fstream coutfile(outputFile, ios_base::app);
+	coutfile << left << setw(10) << temp.type << "\t\t" << temp.value << endl;
 	if (t.value == "-") {
 		Primary(temp);
 	}
@@ -532,10 +612,14 @@ void Primary(Token t) {
 	if (t.type == "identifier") {
 		Identifier(token);
 		Token temp1 = lexer(allWords.at(++index));
+		fstream coutfile(outputFile, ios_base::app);
+		coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 		if (temp1.value == "(") {
 			Token temp2 = lexer(allWords.at(++index));
+			coutfile << left << setw(10) << temp2.type << "\t\t" << temp2.value << endl;
 			IDs(temp2);
 			Token temp3 = lexer(allWords.at(++index));
+			coutfile << left << setw(10) << temp3.type << "\t\t" << temp3.value << endl;
 			if (temp3.value == ")") {}
 			else Error();
 		}
@@ -545,8 +629,11 @@ void Primary(Token t) {
 	}
 	else if (t.value == "(") {
 		Token temp1 = lexer(allWords.at(++index));
+		fstream coutfile(outputFile, ios_base::app);
+		coutfile << left << setw(10) << temp1.type << "\t\t" << temp1.value << endl;
 		Expression(temp1);
 		Token temp2 = lexer(allWords.at(++index));
+		coutfile << left << setw(10) << temp2.type << "\t\t" << temp2.value << endl;
 		if (temp2.value == ")") {}
 		else Error();
 	}
@@ -690,7 +777,7 @@ void Identifier(Token temp) {
 	if (temp.type == "identifier") {
 	}
 	//else
-		//Error();
+	//Error();
 }
 
 void Real() {
