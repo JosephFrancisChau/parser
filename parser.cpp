@@ -1,15 +1,17 @@
-//#include "stdafx.h"
+#include "stdafx.h"
 #include "parser.h"
 #include "lexer.h"
 #include <fstream>
 #include "globals.h"
+#include <iomanip>  //setw
 
 using namespace std;
-
-vector<string> allWords;
+fstream coutfile(outputFile, ios_base::app);
+//vector<string> allWords;
 Token token;
 int ruleNum;
-string s;
+//string s;
+//unsigned index;
 
 //fstream coutfile(outputFile, std::ios_base::app);
 //ofstream coutfile;
@@ -21,7 +23,8 @@ void Parser(Token word, unsigned index) {
 
 void Error() {
 	cout << "Syntax Error!" << endl;
-	return;
+	coutfile << "Syntax Error!" << endl;
+	exit(0);
 }
 
 //R1: <Rat18S> → <Opt Function Definitions> %% <Opt Declaration List> <Statement List>
@@ -29,6 +32,8 @@ void Rat18S(Token token, unsigned index) {
 	PrintRule(1);
 	OptFunctionDefinitions();
 	Token temp = lexer(allWords.at(++index));
+	cout << left << setw(10) << "Token:" << temp.type << "\t\t" << temp.value << endl;
+	coutfile << left << setw(10) << temp.type << "\t\t" << temp.value << endl;
 	if (temp.value == "%%") {
 		OptDeclarationList();
 		StatementList();
@@ -512,7 +517,7 @@ void Empty() {
 }
 
 void PrintRule(int ruleNum) {
-	fstream coutfile(outputFile, ios_base::app);
+	
 	switch (ruleNum) {
 	case 1:
 		coutfile << "<Rat18S> → <Opt Function Definitions> %% <Opt Declaration List> <Statement List>" << endl;
@@ -632,7 +637,7 @@ void PrintRule(int ruleNum) {
 		coutfile << "Syntax Error" << endl;
 		break;
 	}
-	coutfile.close();
+	//coutfile.close();
 }
 
 void Identifier() {
