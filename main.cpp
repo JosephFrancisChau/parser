@@ -33,7 +33,8 @@ int main(int argc, const char * argv[]) {
 		while (sourceFile >> word) {
 			vector<string> vec = splitWord(word);
 			for (unsigned i = 0; i < vec.size(); ++i) {
-				allWords.push_back(vec.at(i));
+				if (!vec.at(i).empty())	
+					allWords.push_back(vec.at(i));
 			}
 		}
 		
