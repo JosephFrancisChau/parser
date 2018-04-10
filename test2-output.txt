@@ -1,95 +1,28 @@
-Source Code:
-
-function convert$ [fahr:int]
-{
-	return 5 * (fair -32)/9;
-}
-
-%%
-	int one, two, three;
-	
-	get(one);
-	put(two);
-	three = one + two;
-	
-	while(one < three)
-	{
-		two=2*2;
-		three=3*3;
-		one=one + 1;
-	}
-
-
-Output:
-
-token     		lexeme
-keyword   		function
+Token:    keyword		Lexeme: function
+<Rat18S> → <Opt Function Definitions> %% <Opt Declaration List> <Statement List>
+<Opt Function Definitions> → <Function Definitions> | <Empty>
+<Function Definitions> → <Function> <Function Definitions’>
+<Function> → function <Identifier> [<Opt Parameter List>] <Opt Declaration List> <Body>
 identifer 		convert$
 separator 		[
 identifer 		fahr
+<Opt Parameter List> → <Parameter List> | <Empty>
+<Parameter List> → <Parameter> <Parameter List’>
+<Parameter> → <IDs> : <Qualifier>
+<IDs> → <Identifier> <IDs’>
+separator 		:
+<IDs’> → , <IDs> | e
+<Empty> → e
 separator 		:
 keyword   		int
+<Qualifier> → int | boolean | real
+separator 		]
+<Parameter List’> → , <Parameter List> |  e
+<Empty> → e
 separator 		]
 separator 		{
-keyword   		return
-integer   		5
-operator  		*
-separator 		(
-identifer 		fair
-operator  		-
-integer   		32
-separator 		)
-operator  		/
-integer   		9
-separator 		;
-separator 		}
-separator 		%%
-keyword   		int
-identifer 		one
-separator 		,
-identifer 		two
-separator 		,
-identifer 		three
-separator 		;
-keyword   		get
-separator 		(
-identifer 		one
-separator 		)
-separator 		;
-keyword   		put
-separator 		(
-identifer 		two
-separator 		)
-separator 		;
-identifer 		three
-operator  		=
-identifer 		one
-operator  		+
-identifer 		two
-separator 		;
-keyword   		while
-separator 		(
-identifer 		one
-operator  		<
-identifer 		three
-separator 		)
-separator 		{
-identifer 		two
-operator  		=
-integer   		2
-operator  		*
-integer   		2
-separator 		;
-identifer 		three
-operator  		=
-integer   		3
-operator  		*
-integer   		3
-separator 		;
-identifer 		one
-operator  		=
-identifer 		one
-operator  		+
-integer   		1
-separator 		;
-separator 		}
+<Opt Declaration List> → <Declaration List> | <Empty>
+<Declaration List> → <Declaration> ; <Declaration List’>
+<Declaration> → <Qualifier> <IDs>
+<Qualifier> → int | boolean | real
+Syntax Error!
