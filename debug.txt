@@ -1,0 +1,6 @@
+Token:    keyword		Lexeme: if
+<Rat18S> → <Opt Function Definitions> %% <Opt Declaration List> <Statement List>
+<Opt Function Definitions> → <Function Definitions> | <Empty>
+<Function Definitions> → <Function> <Function Definitions’>
+<Function> → function <Identifier> [<Opt Parameter List>] <Opt Declaration List> <Body>
+Syntax Error!

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "lexer.h"
 #include "globals.h"
 #include "parser.h"
@@ -8,7 +8,7 @@ using namespace std;
 vector<string> allWords;
 string outputFile;
 Token start;
-unsigned index;
+unsigned tokenIndex;
 //fstream coutfile(outputFile);
 
 int main(int argc, const char * argv[]) {
@@ -42,8 +42,8 @@ int main(int argc, const char * argv[]) {
 			Token start = lexer(allWords.at(i));
 			cout << left << setw(10) << "Token:" << start.type << "\t\t" << "Lexeme: "<< start.value << endl;
 			coutfile << left << setw(10) << "Token:" << start.type << "\t\t" << "Lexeme: " << start.value << endl;
-			index = i;
-			Parser(start, index);
+			tokenIndex = i;
+			Parser(start, tokenIndex);
 			coutfile.close();
 		}	
 

@@ -8,6 +8,6 @@ using namespace std;
 
 extern string outputFile;
 extern vector<string> allWords;
-extern unsigned index;
+extern unsigned tokenIndex;
 
 #endif /* globals_h */

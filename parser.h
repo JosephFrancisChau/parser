@@ -6,12 +6,12 @@
 #include "lexer.h"
 #include "globals.h"
 
-void Parser(Token token, unsigned index);
+void Parser(Token token, unsigned tokenIndex);
 
 void Error();
 
 //R1: <Rat18S> → <Opt Function Definitions> %% <Opt Declaration List> <Statement List>
-void Rat18S(Token token, unsigned index);
+void Rat18S(Token token, unsigned tokenIndex);
 
 //R2: <Opt Function Definitions> → <Function Definitions> | <Empty>
 void OptFunctionDefinitions();
