@@ -29,12 +29,13 @@ int main(int argc, const char * argv[]) {
 	ifstream sourceFile(inputFile);
 
 	if (sourceFile.is_open()) {
-		// call splitWord can creat allWords
+		// call splitWord can create allWords
 		while (sourceFile >> word) {
 			vector<string> vec = splitWord(word);
 			for (unsigned i = 0; i < vec.size(); ++i) {
-				if (!vec.at(i).empty())	
-					allWords.push_back(vec.at(i));
+				//allWords.push_back(vec.at(i));
+                if(!vec.at(i).empty())
+                    allWords.push_back(vec.at(i));
 			}
 		}
 		
